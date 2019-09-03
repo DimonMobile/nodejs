@@ -1,3 +1,5 @@
+var port = 5000;
+
 var http = require('http');
 var fs = require('fs');
 
@@ -6,11 +8,17 @@ const server = http.createServer((request, response) => {
         response.writeHead(200, {'Content-type': 'text/html'});
         response.end("<a href='/html'>/html</a><br>" + 
                      "<a href='/png'>/png</a><br>" + 
-                     "<a href='/api/name'>/api/name</a><br>");
+                     "<a href='/api/name'>/api/name</a><br>" + 
+                     "<a href='/xmlhttprequest'>/xmlhttprequest</a><br>");
     } else if (request.url == '/html') {
         let html = fs.readFileSync("./index.html");
         response.writeHead(200, {'Content-type': 'text/html'});
         response.end(html);
+    } else if (request.url == '/xmlhttprequest') {
+        let html = fs.readFile('./xmlhttprequest.html', (err, data) => {
+            response.writeHead(200, {'Content-type': 'text/html'});
+            response.end(data);    
+        });
     } else if (request.url == '/api/name') {
         response.writeHead(200, {'Content-type': 'text/plain; charset=utf-8'});
         response.end('Дмитрий Плотников')
@@ -28,6 +36,6 @@ const server = http.createServer((request, response) => {
         response.writeHead(404, {'Content-type': 'text/html'});
         response.end("<h1>404 Error</h1>")
     }
-}).listen(3000);
+}).listen(port);
 
-console.log('Server running at http://localhost:3000');
+console.log('Server running at http://localhost:' + port);
