@@ -10,7 +10,8 @@ const server = http.createServer((request, response) => {
                      "<a href='/png'>/png</a><br>" + 
                      "<a href='/api/name'>/api/name</a><br>" + 
                      "<a href='/xmlhttprequest'>/xmlhttprequest</a><br>" +
-                     "<a href='/fetch'>/fetch</a><br>");
+                     "<a href='/fetch'>/fetch</a><br>" + 
+                     "<a href='/jquery'>/jquery</a><br>");
     } else if (request.url == '/html') {
         let html = fs.readFileSync("./index.html");
         response.writeHead(200, {'Content-type': 'text/html'});
@@ -35,6 +36,10 @@ const server = http.createServer((request, response) => {
         });
     } else if (request.url == '/fetch') {
         let html = fs.readFileSync('./fetch.html');
+        response.writeHead(200, {'Content-type': 'text/html'});
+        response.end(html);
+    } else if (request.url == '/jquery') {
+        let html = fs.readFileSync('./jquery.html');
         response.writeHead(200, {'Content-type': 'text/html'});
         response.end(html);
     } else {
