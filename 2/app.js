@@ -6,11 +6,11 @@ var fs = require('fs');
 const server = http.createServer((request, response) => {
     if (request.url == '/') {
         response.writeHead(200, {'Content-type': 'text/html'});
-        response.end("<a href='/html'>/html</a><br>" + 
-                     "<a href='/png'>/png</a><br>" + 
-                     "<a href='/api/name'>/api/name</a><br>" + 
+        response.end("<a href='/html'>/html</a><br>" +
+                     "<a href='/png'>/png</a><br>" +
+                     "<a href='/api/name'>/api/name</a><br>" +
                      "<a href='/xmlhttprequest'>/xmlhttprequest</a><br>" +
-                     "<a href='/fetch'>/fetch</a><br>" + 
+                     "<a href='/fetch'>/fetch</a><br>" +
                      "<a href='/jquery'>/jquery</a><br>");
     } else if (request.url == '/html') {
         let html = fs.readFileSync("./index.html");
@@ -19,7 +19,7 @@ const server = http.createServer((request, response) => {
     } else if (request.url == '/xmlhttprequest') {
         let html = fs.readFile('./xmlhttprequest.html', (err, data) => {
             response.writeHead(200, {'Content-type': 'text/html'});
-            response.end(data);    
+            response.end(data);
         });
     } else if (request.url == '/api/name') {
         response.writeHead(200, {'Content-type': 'text/plain; charset=utf-8'});
