@@ -1,5 +1,6 @@
 var http = require('http');
 var url = require('url');
+var fs = require('fs');
 
 function factorial(k) {
     if (k <= 1) return 1;
@@ -19,6 +20,10 @@ http.createServer((request, response) => {
             response.writeHead(200, { 'Content-type': 'application/json' });
             response.end(JSON.stringify({'k': k, 'fact': factorial(k)}));
         }
+    } else if (path == '/') {
+        let html = fs.readFileSync('./fact.html');
+        response.writeHead(200, {'Content-type': 'text/html'});
+        response.end(html);
     }
 }).listen(3000);
 
