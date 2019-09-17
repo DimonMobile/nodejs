@@ -8,13 +8,13 @@ var db = new data.DB();
 
 db.on('GET', (req, res) => {
     res.writeHead(200, {'Content-type': 'application/json'});
-    res.end(JSON.stringify(db.get()));
+    res.end(JSON.stringify(db.select()));
 });
 
 db.on('POST', (req, res) => {
     req.on('data', (chunk) => {
         let data = JSON.parse(chunk);
-        db.post(data);
+        db.insert(data);
 
         res.writeHead(200, {'Content-type': 'application/json'});
         res.end(JSON.stringify(data));
