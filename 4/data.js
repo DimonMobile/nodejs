@@ -8,6 +8,16 @@ function DB() {
         r['id'] = db_data.length + 1;
         db_data.push(r);
     };
+    this.update = (r) => {
+        let found = db_data.find(p => p.id == r.id);
+        if (found != undefined) {
+            found.fio = r.fio;
+            found.date = r.date;
+        }
+    };
+    this.delete = (index) => {
+
+    };
 }
 
 util.inherits(DB, ee.EventEmitter);

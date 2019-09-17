@@ -22,7 +22,10 @@ db.on('POST', (req, res) => {
 });
 
 db.on('PUT', (req, res) => {
-    console.log('DB.PUT');
+    req.on('data', (chunk) => {
+        let data = JSON.parse(chunk);
+        db.update(data);
+    });
 });
 
 db.on('DELETE', (req, res) => {
