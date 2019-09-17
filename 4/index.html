@@ -5,7 +5,18 @@
         <title>Main page</title>
         <script>
             function Get() {
-                
+                fetch('/api/db').then(r => r.json()).then(json => {
+                    result.innerHTML = '';
+                    json.forEach(obj => {
+                        result.innerHTML += obj.id + '. ' + obj.fio + ' - ' + obj.date + '</br>';
+                    });
+                });
+            }
+            function Post() {
+                fetch('/api/db', {'method': 'POST', 
+                    headers: {'Content-type': 'application/json', 'Accept': 'application/json'},
+                    body: JSON.stringify({id: Id.value, fio: Fio.value, date: Birth.value})
+                }).then(r => r.json()).then(data => console.log(data));
             }
         </script>
     </head>
@@ -14,11 +25,11 @@
         <div id="result"></div><br/>
         <button onclick="Get()">GET</button><br/>
         <label>Идентификатор</label><br/>
-        <input type="number" id="id"/><br/>
+        <input type="number" id="Id"/><br/>
         <label>ФИО</label><br/>
-        <input type="text" id="fio"/><br/>
+        <input type="text" id="Fio"/><br/>
         <label>Дата рождения</label><br/>
-        <input type="date" id="date"/><br/>
+        <input type="date" id="Birth"/><br/>
         <button onclick="Post()">POST</button>
     </body>
 </html>

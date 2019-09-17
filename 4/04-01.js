@@ -4,19 +4,27 @@ var fs = require('fs');
 var url = require('url');
 
 var port = 5000;
-
 var db = new data.DB();
 
 db.on('GET', (req, res) => {
     res.writeHead(200, {'Content-type': 'application/json'});
     res.end(JSON.stringify(db.get()));
 });
+
 db.on('POST', (req, res) => {
-    console.log('DB.POST');
+    req.on('data', (chunk) => {
+        let data = JSON.parse(chunk);
+        db.post(data);
+
+        res.writeHead(200, {'Content-type': 'application/json'});
+        res.end(JSON.stringify(data));
+    });
 });
+
 db.on('PUT', (req, res) => {
     console.log('DB.PUT');
 });
+
 db.on('DELETE', (req, res) => {
     console.log('DB.DELETE');
 });
