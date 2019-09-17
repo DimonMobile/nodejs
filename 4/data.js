@@ -16,7 +16,7 @@ function DB() {
         }
     };
     this.delete = (index) => {
-
+        db_data = db_data.filter(p => p.id != index);
     };
 }
 

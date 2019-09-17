@@ -30,6 +30,13 @@
                     body: getUserAsString()
                 });
             }
+            function Delete() {
+                fetch(
+                    `/api/db?id=${encodeURIComponent(Id.value)}`, {
+                        'method': 'DELETE'
+                    }
+                );
+            }
         </script>
     </head>
     <body>

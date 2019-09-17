@@ -25,11 +25,22 @@ db.on('PUT', (req, res) => {
     req.on('data', (chunk) => {
         let data = JSON.parse(chunk);
         db.update(data);
+
+        res.writeHead(200, {'Content-type': 'text/plain'});
+        res.end('ok');
     });
 });
 
 db.on('DELETE', (req, res) => {
-    console.log('DB.DELETE');
+    let queryId = url.parse(req.url, true).query.id;
+    if (typeof queryId != 'undefined') {
+        queryId = parseInt(queryId);
+        console.log('Deleted ' + queryId);
+        db.delete(queryId);
+    }
+
+    res.writeHead(200, {'Content-type': 'text/plain'});
+    res.end('ok');
 });
 
 
