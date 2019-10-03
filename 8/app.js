@@ -4,6 +4,7 @@ let qs = require('querystring');
 let fs = require('fs');
 let parseString = require('xml2js').parseString;
 let xmlbuilder = require('xmlbuilder');
+let mp = require('multiparty');
 
 
 let server = http.createServer(function(req, resp) {
@@ -158,6 +159,20 @@ let server = http.createServer(function(req, resp) {
         } catch (e) {
             resp.writeHead(404, {'Content-type': 'text/html'});
             resp.end('404 ' + e.toString());
+        }
+    } else if (parsedUrl.pathname == '/upload') {
+        if (req.method == 'GET') {
+            resp.writeHead(200, {'Content-type': 'text/html'});
+            resp.end('<form method="POST" action="/upload" enctype="multipart/form-data"><input type="file" name="file"/><input type="submit"/></form>');
+        } else if (req.method == 'POST') {
+            let form = new mp.Form({uploadDir: './static'});
+            form.on('file', (name, file) => {
+            });
+            form.on('close', () => {
+                resp.writeHead(200, {'Content-type': 'text/plain'});
+                resp.end("Uploaded!");
+            });
+            form.parse(req);
         }
     }
 }).listen(5000);
