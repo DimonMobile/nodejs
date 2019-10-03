@@ -19,8 +19,24 @@ let server = http.createServer(function(req, resp) {
         Object.entries(req.headers).forEach(element => {
             result += element[0] + ': ' + element[1] + '\n';
         });
-
         resp.end(result);
+    } else if (parsedUrl.pathname == '/parameter') {
+        resp.writeHead(200, {'Content-type': 'text/plain'});
+        let value1 = parsedUrl.query.x;
+        let value2 = parsedUrl.query.y;
+        
+        try {
+            if (value1 == undefined || value2 == undefined) 
+                throw Error('x or y not passed');
+
+            let x = parseInt(value1);
+            let y = parseInt(value2);
+            if (isNaN(value1) || isNaN(value2))
+                throw Error('x or y is not a number');
+            resp.end(`x + y = ${x + y}\nx - y = ${x - y}\nx * y = ${x * y}\nx / y = ${x / y}`);
+        } catch (e) {
+            resp.end(e.toString());
+        }
     }
 }).listen(5000);
 
