@@ -1,5 +1,6 @@
 let http = require('http');
 let url = require('url');
+let qs = require('querystring');
 
 
 let server = http.createServer(function(req, resp) {
@@ -64,6 +65,20 @@ let server = http.createServer(function(req, resp) {
     } else if (parsedUrl.pathname == '/socket') {
         resp.writeHead(200, {'Content-type': 'text/plain'});
         resp.end(req.connection.remoteAddress + ':' + req.connection.remotePort);
+    } else if (parsedUrl.pathname == '/req-data') {
+        let data = '';
+        req.on('data', (chunk) => {
+            data += chunk;
+        });
+        req.on('end', () => {
+            let o = qs.parse(data);
+            let result = '';
+            for(let key in o) {
+                result += `${key} = ${o[key]}\n`;
+            }
+            resp.writeHead(200, {'Content-type': 'text/plain'});
+            resp.end(result);
+        });
     }
 }).listen(5000);
 
