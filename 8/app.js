@@ -105,6 +105,22 @@ let server = http.createServer(function(req, resp) {
         } else if (req.method == 'POST') {
 
         }
+    } else if (parsedUrl.pathname == '/json') {
+        let data = '';
+        req.on('data', (chunk) => {
+            data += chunk;
+        });
+        req.on('end', () => {
+            data = JSON.parse(data);
+            resp.writeHead(200, {'Content-type': 'application/json; charset=utf-8'});
+            let comment = 'Ответ.' + data.__comment.split('.')[1];
+            let response = {};
+            response.__comment = comment;
+            response.x_plus_y = data.x + data.y;
+            response.Concatenation_s_o = data.o.surname + ', ' + data.o.name;
+            response.Length_m = data.m.length;
+            resp.end(JSON.stringify(response));
+        });
     }
 }).listen(5000);
 
