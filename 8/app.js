@@ -79,6 +79,24 @@ let server = http.createServer(function(req, resp) {
             resp.writeHead(200, {'Content-type': 'text/plain'});
             resp.end(result);
         });
+    } else if (parsedUrl.pathname == '/resp-status') {
+        try {
+            let code = parsedUrl.query.code;
+            let mess = parsedUrl.query.mess;
+            if (code == undefined || mess == undefined)
+                throw Error('Params error');
+
+            code = parseInt(code);
+            if (isNaN(code))
+                throw Error('passed code is nan');
+
+            resp.writeHead(code, {'Content-type': 'text/plain'});
+            resp.statusMessage = mess;
+            resp.end('Yeah!');
+        } catch (e) {
+            resp.writeHead(200, {'Content-type': 'text/plain'});
+            resp.end(e.toString());
+        }
     }
 }).listen(5000);
 
