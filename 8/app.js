@@ -148,6 +148,17 @@ let server = http.createServer(function(req, resp) {
                 resp.end(xmlDoc.toString());
             });
         });
+    } else if (parsedUrl.pathname == '/files') {
+        resp.writeHead(200, {'X-static-files-count': fs.readdirSync('./static').length});
+        resp.end();
+    } else if (pathUrls[1] == 'files') {
+        try {
+            let data = fs.readFileSync('static/' + pathUrls[2]);
+            resp.end(data);
+        } catch (e) {
+            resp.writeHead(404, {'Content-type': 'text/html'});
+            resp.end('404 ' + e.toString());
+        }
     }
 }).listen(5000);
 
