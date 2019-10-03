@@ -1,6 +1,7 @@
 let http = require('http');
 let url = require('url');
 let qs = require('querystring');
+let fs = require('fs');
 
 
 let server = http.createServer(function(req, resp) {
@@ -76,7 +77,7 @@ let server = http.createServer(function(req, resp) {
             for(let key in o) {
                 result += `${key} = ${o[key]}\n`;
             }
-            resp.writeHead(200, {'Content-type': 'text/plain'});
+            resp.writeHead(200, {'Content-type': 'text/plain; charset=utf-8'});
             resp.end(result);
         });
     } else if (parsedUrl.pathname == '/resp-status') {
@@ -96,6 +97,13 @@ let server = http.createServer(function(req, resp) {
         } catch (e) {
             resp.writeHead(200, {'Content-type': 'text/plain'});
             resp.end(e.toString());
+        }
+    } else if (parsedUrl.pathname == '/formparameter') {
+        if (req.method == 'GET') {
+            resp.writeHead(200, {'Content-type': 'text/html; charset=utf-8'});
+            resp.end('<head><meta charset="utf-8"></head><form method="POST" action="req-data"><input type="text" name="first" /><input name="kek" type="submit" value="first" /><input name="kekalka" type="submit" /></form>');
+        } else if (req.method == 'POST') {
+
         }
     }
 }).listen(5000);
