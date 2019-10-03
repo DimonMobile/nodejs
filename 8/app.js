@@ -2,6 +2,8 @@ let http = require('http');
 let url = require('url');
 let qs = require('querystring');
 let fs = require('fs');
+let parseString = require('xml2js').parseString;
+let xmlbuilder = require('xmlbuilder');
 
 
 let server = http.createServer(function(req, resp) {
@@ -120,6 +122,31 @@ let server = http.createServer(function(req, resp) {
             response.Concatenation_s_o = data.o.surname + ', ' + data.o.name;
             response.Length_m = data.m.length;
             resp.end(JSON.stringify(response));
+        });
+    } else if (parsedUrl.pathname == '/xml') {
+        let data = '';
+        req.on("data", (chunk) => {
+            data += chunk;
+        });
+        req.on("end", () => {
+            parseString(data, function(err, result) {
+                resp.writeHead(200, {'Content-type': 'application/xml'});
+                let id = result.request.$.id;
+
+                let xSum = 0;
+                let mSum = '';
+                result.request.x.forEach((p) => {
+                    xSum += parseInt(p.$.value);
+                });
+                result.request.m.forEach((p) => {
+                    mSum += p.$.value;
+                });
+
+                let xmlDoc = xmlbuilder.create('response').att('id', id);
+                xmlDoc.ele('sum').att('element', 'x').att('result', xSum).up().ele('concat').att('element', 'm').att('result', mSum);
+
+                resp.end(xmlDoc.toString());
+            });
         });
     }
 }).listen(5000);
