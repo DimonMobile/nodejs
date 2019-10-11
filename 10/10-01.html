@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>10-01</title>
+        <script>
+            let n = 0;
+            socket = new WebSocket('ws:/localhost:4000/wsserver');
+            socket.onopen = () => {
+                    socket.send(`Hi`);
+                };
+            socket.onclose = (e) => {console.log(`socket closed ${e}`);};
+            socket.onmessage = (e) => {console.log(`OnMessage: ${e.data}`)};
+            socket.onerror = (e) => {alert(`Error: ${e.message}`)};
+            function sendShit() {
+                socket.send(`10-01-client: ${++n}`);
+            }
+            function startWS() {
+                setInterval(sendShit, 1000);
+                setTimeout(function() {
+                    socket.close();
+                }, 25 * 1000);
+            }
+        </script>
+    </head>
+    <body>
+        <h1>10-01</h1>
+        <button onclick="startWS()">startWS</button>
+    </body>
+</html>
