@@ -2,6 +2,8 @@ const rpcWSS = require('rpc-websockets').Server;
 
 let server = new rpcWSS({port: 4000, host: 'localhost'});
 
+server.setAuth(l => {return (l.login === '123' && l.password === '123')});
+
 server.register('square', params => {
     if (params.length == 1) {
         return Math.pow(params[0], 2) * Math.PI;
