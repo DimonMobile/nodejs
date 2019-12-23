@@ -1,0 +1,15 @@
+{
+  "name": "17lab",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "node ./test.js",
+    "start": "node ./app.js"
+  },
+  "author": "Dimon Mobile",
+  "license": "ISC",
+  "dependencies": {
+    "redis": "^2.8.0"
+  }
+}
