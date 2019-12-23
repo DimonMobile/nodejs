@@ -1,0 +1,19 @@
+type Faculty {
+    faculty: String!
+    facultyName: String!
+}
+
+type Query {
+    faculties: [Faculty!]!
+    faculty(faculty:String!): Faculty!
+}
+
+input inFaculty {
+    faculty: String!
+    facultyName: String!
+}
+
+type Mutation {
+    add_faculty(faculty: inFaculty!): Faculty!
+    del_faculty(faculty: inFaculty!): Faculty!
+}
